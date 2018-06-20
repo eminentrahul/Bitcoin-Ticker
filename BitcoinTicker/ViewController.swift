@@ -2,8 +2,8 @@
 //  ViewController.swift
 //  BitcoinTicker
 //
-//  Created by Angela Yu on 23/01/2016.
-//  Copyright © 2016 London App Brewery. All rights reserved.
+//  Created by rahul Ravi Prakash on 20/06/2018.
+//  Copyright © 2018 Rahul Ravi Prakash. All rights reserved.
 //
 
 import UIKit
@@ -14,7 +14,9 @@ class ViewController: UIViewController, UIPickerViewDataSource, UIPickerViewDele
     
     let baseURL = "https://apiv2.bitcoinaverage.com/indices/global/ticker/BTC"
     let currencyArray = ["AUD", "BRL","CAD","CNY","EUR","GBP","HKD","IDR","ILS","INR","JPY","MXN","NOK","NZD","PLN","RON","RUB","SEK","SGD","USD","ZAR"]
-    var finalURL = ""
+	let currencySymbolArray = ["$", "R$", "$", "¥", "€", "£", "$", "Rp", "₪", "₹", "¥", "$", "kr", "$", "zł", "lei", "₽", "kr", "$", "$", "R"]
+	var currencySelected = ""
+	var finalURL = ""
 
     //Pre-setup IBOutlets
     @IBOutlet weak var bitcoinPriceLabel: UILabel!
@@ -45,29 +47,32 @@ class ViewController: UIViewController, UIPickerViewDataSource, UIPickerViewDele
 		return currencyArray[row]
 	}
 	
+	//Make something happen when user select item from pickerview.
 	func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
-		print(currencyArray[row])
+		//print(currencyArray[row]) // Check whether it works properly or not
 		
 		finalURL = baseURL + currencyArray[row]
-		print(finalURL)
+		//print(finalURL)
+		currencySelected = currencySymbolArray[row]
+		getBitcoinData(url: finalURL)
 	}
     
 	
     
-//    
-//    //MARK: - Networking
-//    /***************************************************************/
-//    
-    func getWeatherData(url: String) {
+	
+    //MARK: - Networking
+    /***************************************************************/
+	
+    func getBitcoinData(url: String) {
 		
         Alamofire.request(url, method: .get)
             .responseJSON { response in
                 if response.result.isSuccess {
 
-                    print("Sucess! Got the weather data")
-                    let weatherJSON : JSON = JSON(response.result.value!)
+                    print("Sucess! Got the Bitcoin data")
+                    let bitcoinJSON : JSON = JSON(response.result.value!)
 
-                    self.updateWeatherData(json: weatherJSON)
+                    self.updateBicoinData(json: bitcoinJSON)
 
                 } else {
                     print("Error: \(String(describing: response.result.error))")
@@ -76,18 +81,18 @@ class ViewController: UIViewController, UIPickerViewDataSource, UIPickerViewDele
             }
 
     }
-//
-//    
-//    
-//    
-//    
+
+	
+	
 //    //MARK: - JSON Parsing
 //    /***************************************************************/
-//    
-    func updateWeatherData(json : JSON) {
+	
+    func updateBicoinData(json : JSON) {
 		
-        if let tempResult = json["main"]["temp"].double {
+        if let bitcoinPriceResult = json["ask"].double {
 			
+			print(bitcoinPriceResult)
+			bitcoinPriceLabel.text = "\(currencySelected) \(bitcoinPriceResult)"
 		}
 		else {
 			bitcoinPriceLabel.text = "Price Unavailable"

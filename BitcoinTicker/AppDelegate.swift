@@ -2,10 +2,9 @@
 //  AppDelegate.swift
 //  BitcoinTicker
 //
-//  Created by Angela Yu on 23/01/2016.
-//  Copyright © 2016 London App Brewery. All rights reserved.
+//  Created by rahul Ravi Prakash on 20/06/2018.
+//  Copyright © 2018 Rahul Ravi Prakash. All rights reserved.
 //
-
 import UIKit
 
 @UIApplicationMain
